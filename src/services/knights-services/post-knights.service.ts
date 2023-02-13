@@ -46,7 +46,7 @@ export class PostKnights{
         try {
             
             if(body){
-                let filter = {_id: { $eq: body.id}};
+                let filter = {_id: { $eq: body._id}};
 
                 let update = await this.mongodb.update(filter, body);
                 if(update){

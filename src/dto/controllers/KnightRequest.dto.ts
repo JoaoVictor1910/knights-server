@@ -7,7 +7,7 @@ export class GetKnightRequestDto {
 
 export class PostKnightRequestDTO {
   @ApiProperty()
-  id: string
+  _id: string
 
   @ApiProperty()
   name: string;
