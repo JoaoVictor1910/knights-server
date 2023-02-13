@@ -8,4 +8,19 @@ export class GetKnightRequestDto {
 export class PostKnightRequestDTO {
   @ApiProperty()
   name: string;
+
+  @ApiProperty()
+  nickname: string;
+  
+  @ApiProperty()
+  birthday: Date;
+
+  @ApiProperty()
+  weaponse:'';
+  
+  @ApiProperty()
+  attributes: '';
+  
+  @ApiProperty()
+  keyAttribute: string;
 }

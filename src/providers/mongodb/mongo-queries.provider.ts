@@ -59,4 +59,16 @@ export class MongoQueries {
         }
     }
 
+    async delete(id: string): Promise<any>{
+        try {
+            
+            return await this.mongodb.findByIdAndDelete(id).exec();
+
+        } catch (error) {
+            
+            throw error;
+
+        }
+    }
+    
 }

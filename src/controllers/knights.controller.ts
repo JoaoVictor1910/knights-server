@@ -2,12 +2,18 @@ import { Controller, Get, Query, Param, Post, Delete, Body } from '@nestjs/commo
 import { ApiOkResponse } from '@nestjs/swagger';
 import { GetKnightRequestDto, PostKnightRequestDTO } from 'src/dto/controllers/KnightRequest.dto';
 import { GetKnightsResponse } from "src/dto/services/get-knights.dto";
+import { CreateKnightResponse } from 'src/dto/services/post-knights.dto';
+import { DeleteKnightRespone } from 'src/dto/services/delete-knights.dto';
 import { GetKnights } from 'src/services/knights-services/get-knights.service';
+import { PostKnights } from 'src/services/knights-services/post-knights.service';
+import { DeleteKnights } from 'src/services/knights-services/delete-knights.service';
 
 @Controller('/knights')
 export class KnightsController {
   constructor(
-    private readonly getKnights: GetKnights
+    private readonly getKnights: GetKnights,
+    private readonly postKnights: PostKnights,
+    private readonly deleteKnights: DeleteKnights
   ) {}
 
   @Get('/')
@@ -33,22 +39,29 @@ export class KnightsController {
   @ApiOkResponse({ type: [Object] })
   async createKnights(
     @Body() knightToSave: PostKnightRequestDTO
-  ): Promise<void> {
-    return;
+  ): Promise<CreateKnightResponse> {
+
+    return await this.postKnights.createKnights(knightToSave);
+  
   }
   
   @Post('/update/:idKnight')
   async updateKnight(
-    @Param('idKnight') idKnight: string
-  ): Promise<void> {
-    return;
+    @Param('idKnight') idKnight: string,
+    @Body() knightToSave: PostKnightRequestDTO
+  ): Promise<CreateKnightResponse> {
+  
+    return await this.postKnights.updateKnights(idKnight, knightToSave);
+  
   }
 
   @Delete('/delete/:idKnight')
   async DeleteKnight(
     @Param('idKnight') idKnight: string
-  ): Promise<void> {
-    return;
+  ): Promise<DeleteKnightRespone> {
+  
+    return await this.deleteKnights.deleteKnights(idKnight);
+  
   }
 
   
