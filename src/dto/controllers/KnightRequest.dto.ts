@@ -7,6 +7,9 @@ export class GetKnightRequestDto {
 
 export class PostKnightRequestDTO {
   @ApiProperty()
+  id: string
+
+  @ApiProperty()
   name: string;
 
   @ApiProperty()
@@ -16,11 +19,27 @@ export class PostKnightRequestDTO {
   birthday: Date;
 
   @ApiProperty()
-  weaponse:'';
+  weaponse: Array<Weapons>;
   
   @ApiProperty()
-  attributes: '';
+  attributes: Attributes;
   
   @ApiProperty()
   keyAttribute: string;
+}
+
+
+type Weapons = {
+  name: string;
+  mod: number;
+  attr: string;
+  equipped: Boolean;
+}
+type Attributes = {
+  strength: number; 
+  dexterity: number; 
+  constitution: number; 
+  intelligence: number; 
+  wisdom: number; 
+  charisma: number; 
 }

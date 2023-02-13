@@ -32,14 +32,14 @@ export class GetKnights{
         }
     }
 
-    async listOne(idKnight: string): Promise<GetKnightsResponse>{
+    async listOne(idKnight: string): Promise<GetKnightsResponse[]>{
 
         try {
-            let filter = {id: { $eq: idKnight}};
+            let filter = {_id: { $eq: idKnight}};
 
             let data = await this.mongodb.findOne(filter);
 
-            return await this.prepareData([data])[0];
+            return await this.prepareData([data]);
 
         } catch (error) {
             throw new Error(error);
@@ -50,31 +50,47 @@ export class GetKnights{
     async prepareData(data: Array<any>): Promise<any[]> {
         const _self = this;
 
-        return data.map(async (object) => {
-            let modAttr = await _self.modAttributes(object.attributes);
-            let attack = (10 + modAttr) + object.weapons.find(ele => ele.equipped == true).mod;
+        try {
+            if(data.length){
+                let mapped = data.map((object) => {
+                    let modAttr = _self.modAttributes(object.attributes[0]);
+                    let attack = (10 + modAttr) + object.weapons.find(ele => ele.equipped == true).mod;
+        
+                    let age = new Date().getFullYear() - new Date(object.birthday).getFullYear();
+                    let exp = Math.floor((age - 7) * Math.pow(22, 1.45));
+                    return {
+                        id: object._id,
+                        name: object.name,
+                        age,
+                        weapons: object.weapons.length,
+                        attribute: object.keyAttribute,
+                        attack,
+                        exp
+                    } as GetKnightsResponse;
+                })
 
-            let age = new Date().getFullYear() - new Date(object.birthday).getFullYear();
-            let exp = Math.floor((age - 7) * Math.pow(22, 1.45));
-            return {
-                id: object.id,
-                name: object.name,
-                age,
-                weapons: object.weapons.length,
-                attribute: object.keyAttribute,
-                attack,
-                exp
-            } as GetKnightsResponse;
-        })
+                return mapped;
+            }
+        } catch (error) {
+            throw error;
+        }
     }
 
-    async modAttributes(attributes: Attributes): Promise<number> {
-        let sum = Number(Object.values(attributes).reduce((acc: number, value: number) => acc + value, 0));
-
-        for (const mod in AttributesModEnum) {
-            if (sum >= AttributesModEnum[mod].range[0] && sum <= AttributesModEnum[mod].range[1]) {
-                return AttributesModEnum[mod].value;
+    modAttributes(attributes: Attributes): number {
+        try {
+            if(attributes){
+                let allAttr = Object.values(Object.values(attributes)[4])
+                let removeId = allAttr.pop()
+                let sum = Number(allAttr.reduce((acc: number, value: number) => acc + value, 0));
+    
+                for (const mod in AttributesModEnum) {
+                    if (sum >= AttributesModEnum[mod].range[0] && sum <= AttributesModEnum[mod].range[1]) {
+                        return AttributesModEnum[mod].value;
+                    }
+                }
             }
+        } catch (error) {
+            throw error;
         }
     }
 }

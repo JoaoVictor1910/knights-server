@@ -35,7 +35,7 @@ export class PostKnights{
         return response as CreateKnightResponse;
     }
 
-    async updateKnights(idKnight: string, body: PostKnightRequestDTO): Promise<CreateKnightResponse>{
+    async updateKnights(body: PostKnightRequestDTO): Promise<CreateKnightResponse>{
         
         const response = {
             save: false,
@@ -45,8 +45,8 @@ export class PostKnights{
 
         try {
             
-            if(idKnight && body){
-                let filter = {id: { $eq: idKnight}};
+            if(body){
+                let filter = {_id: { $eq: body.id}};
 
                 let update = await this.mongodb.update(filter, body);
                 if(update){

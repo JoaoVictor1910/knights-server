@@ -16,7 +16,7 @@ export class KnightsController {
     private readonly deleteKnights: DeleteKnights
   ) {}
 
-  @Get('/')
+  @Get('/list/')
   @ApiOkResponse({ type: [Object] })
   async getKnightsList(
     @Query() getKnightRequestDto: GetKnightRequestDto,
@@ -26,32 +26,32 @@ export class KnightsController {
 
   }
 
-  @Get('/:idKnight')
+  @Get('/list/:idKnight')
   async getKnightProfile(
     @Param('idKnight') idKnight: string
-  ): Promise<GetKnightsResponse> {
+  ): Promise<GetKnightsResponse[]> {
     
     return await this.getKnights.listOne(idKnight);
   
   }
 
-  @Post('/create')
+  @Post('/update/')
+  @ApiOkResponse({ type: [Object] })
+  async updateKnight(
+    @Body() knightToSave: PostKnightRequestDTO
+  ): Promise<CreateKnightResponse> {
+  
+    return await this.postKnights.updateKnights(knightToSave);
+  
+  }
+
+  @Post('/create/')
   @ApiOkResponse({ type: [Object] })
   async createKnights(
     @Body() knightToSave: PostKnightRequestDTO
   ): Promise<CreateKnightResponse> {
 
     return await this.postKnights.createKnights(knightToSave);
-  
-  }
-  
-  @Post('/update/:idKnight')
-  async updateKnight(
-    @Param('idKnight') idKnight: string,
-    @Body() knightToSave: PostKnightRequestDTO
-  ): Promise<CreateKnightResponse> {
-  
-    return await this.postKnights.updateKnights(idKnight, knightToSave);
   
   }
 

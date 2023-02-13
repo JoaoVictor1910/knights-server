@@ -68,8 +68,8 @@ export interface Knights extends Document {
     name: string;
     nickname: string;
     birthday: Date;
-    weaponse:'';
-    attributes: '';
+    weapons: Weapons[];
+    attributes: Attributes;
     keyAttribute: string;
 }
 
