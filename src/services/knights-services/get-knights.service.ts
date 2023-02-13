@@ -19,7 +19,7 @@ export class GetKnights{
             if(params && params.filter){
                 // se o cavaleiro tem mais de 30 anos, ele já é considerado um herói
                 let today = new Date();
-                let minimumBirthday = new Date(today.setFullYear(today.getFullYear() - 10))
+                let minimumBirthday = new Date(today.setFullYear(today.getFullYear() - 30))
                 filter = { birthday: { $lt: minimumBirthday } }
             }
 

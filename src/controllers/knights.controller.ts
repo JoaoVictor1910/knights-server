@@ -35,6 +35,42 @@ export class KnightsController {
   
   }
 
+  // Estava voltando um erro, provavelmente de CORS, mas não tive tempo hábil de investigar. Como espero uma resposta da chamada, utilizei GET
+  @Get('/update/')
+  @ApiOkResponse({ type: [Object] })
+  async getUpdateKnight(
+    @Query() queryToSave: any
+  ): Promise<CreateKnightResponse> {
+    
+    let knightToSave = JSON.parse(queryToSave.data) as PostKnightRequestDTO;
+    return await this.postKnights.updateKnights(knightToSave);
+  
+  }
+
+  // Estava voltando um erro, provavelmente de CORS, mas não tive tempo hábil de investigar. Como espero uma resposta da chamada, utilizei GET
+  @Get('/create/')
+  @ApiOkResponse({ type: [Object] })
+  async getCreateKnights(
+    @Query() queryToSave: any 
+  ): Promise<CreateKnightResponse> {
+    
+    let knightToSave = JSON.parse(queryToSave.data) as PostKnightRequestDTO;
+    return await this.postKnights.createKnights(knightToSave);
+  
+  }
+
+  // Estava voltando um erro, provavelmente de CORS, mas não tive tempo hábil de investigar. Como espero uma resposta da chamada, utilizei GET
+  @Get('/delete/:idKnight')
+  async getDeleteKnight(
+    @Param('idKnight') idKnight: string
+  ): Promise<DeleteKnightRespone> {
+  
+    return await this.deleteKnights.deleteKnights(idKnight);
+  
+  }
+  
+
+  // Chamadas originais
   @Post('/update/')
   @ApiOkResponse({ type: [Object] })
   async updateKnight(
