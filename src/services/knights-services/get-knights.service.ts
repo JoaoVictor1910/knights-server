@@ -47,6 +47,21 @@ export class GetKnights{
 
     }
 
+    async viewKnight(idKnight: string): Promise<GetKnightsResponse[]>{
+
+        try {
+            let filter = {_id: { $eq: idKnight}};
+
+            let data = await this.mongodb.findOne(filter);
+
+            return [data]
+
+        } catch (error) {
+            throw new Error(error);
+        }
+
+    }
+
     async prepareData(data: Array<any>): Promise<any[]> {
         const _self = this;
 
@@ -54,7 +69,8 @@ export class GetKnights{
             if(data.length){
                 let mapped = data.map((object) => {
                     let modAttr = _self.modAttributes(object.attributes[0]);
-                    let attack = (10 + modAttr) + object.weapons.find(ele => ele.equipped == true).mod;
+                    let weaponMod = object.weapons.find(ele => ele.equipped == true)?.mod || 0;
+                    let attack = (10 + modAttr) + weaponMod;
         
                     let age = new Date().getFullYear() - new Date(object.birthday).getFullYear();
                     let exp = Math.floor((age - 7) * Math.pow(22, 1.45));

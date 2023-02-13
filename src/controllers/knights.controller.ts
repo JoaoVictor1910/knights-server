@@ -35,6 +35,15 @@ export class KnightsController {
   
   }
 
+  @Get('/view/:idKnight')
+  async getKnightFullProfile(
+    @Param('idKnight') idKnight: string
+  ): Promise<GetKnightsResponse[]> {
+    
+    return await this.getKnights.viewKnight(idKnight);
+  
+  }
+
   // Estava voltando um erro, provavelmente de CORS, mas não tive tempo hábil de investigar. Como espero uma resposta da chamada, utilizei GET
   @Get('/update/')
   @ApiOkResponse({ type: [Object] })
